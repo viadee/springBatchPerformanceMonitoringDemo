@@ -15,6 +15,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.core.task.SimpleAsyncTaskExecutor;
 
 import de.viadee.spring.batch.infrastructure.Configurator;
 
@@ -63,6 +64,7 @@ public class DemoJobConfig {
 		return stepBuilderFactory.get("partitionStep")
 				.partitioner(demoStep())
 				.partitioner("demoStep", partitioner)
+				.taskExecutor(new SimpleAsyncTaskExecutor())
 				.gridSize(3)
 				.build();
 	}
