@@ -50,22 +50,22 @@ public class DemoJobConfig {
 	}
 
 	@Bean
-	public Step demoStep() {
-		return stepBuilderFactory.get("demoStep")
-				.<DemoItem, DemoItem> chunk(100)
-				.reader(reader(null, null))
-				.processor(processor)
-				.writer(writer)
-				.build();
-	}
-
-	@Bean
 	public Step partitionStep() {
 		return stepBuilderFactory.get("partitionStep")
 				.partitioner(demoStep())
 				.partitioner("demoStep", partitioner)
 				.taskExecutor(new SimpleAsyncTaskExecutor())
 				.gridSize(3)
+				.build();
+	}
+
+	@Bean
+	public Step demoStep() {
+		return stepBuilderFactory.get("demoStep")
+				.<DemoItem, DemoItem> chunk(100)
+				.reader(reader(null, null))
+				.processor(processor)
+				.writer(writer)
 				.build();
 	}
 
